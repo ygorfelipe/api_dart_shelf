@@ -5,7 +5,7 @@ sealed class Developer {
     log('Start the ${instance.runtimeType} instance');
   }
 
-  static void logError(
+ static void logError(
       {required String errorText,
       required Object error,
       String? errorName,

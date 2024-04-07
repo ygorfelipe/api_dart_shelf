@@ -4,6 +4,7 @@ import 'package:api/src/core/constants/consts.dart';
 import 'package:api/src/core/database/database.dart';
 import 'package:api/src/core/database/mysql_database.dart';
 import 'package:api/src/core/env/config.dart';
+import 'package:api/src/core/requests/server_request.dart';
 import 'package:api/src/modules/order/order_route.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shelf/shelf.dart';
@@ -28,10 +29,9 @@ void main(List<String> args) async {
   GetIt.I
       .registerSingleton<Database>(mysql, instanceName: Consts.mysqlInstance);
   final ip = InternetAddress.anyIPv4;
-  final Router router = Router();
   final handler = Pipeline()
       .addMiddleware(logRequests())
-      .addHandler(OrderRoute.routes(router).call);
+      .addHandler(ServerRequest().load().call);
   final port = int.parse(env['server_port'] ?? '8080');
   final server = await serve(handler, ip, port);
   print('Server listening on port ${server.port}');
